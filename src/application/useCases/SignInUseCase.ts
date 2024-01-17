@@ -18,7 +18,7 @@ export class SignInUseCase {
   async execute({ email, password }: IInput): Promise<IOutput> {
     const account = await prismaClient.account.findUnique({
       where: { email },
-      select: { id: true, password: true, role: true }
+      select: { id: true, password: true, roleId: true }
     });
 
     if(!account) {
@@ -34,7 +34,7 @@ export class SignInUseCase {
     const accessToken = sign(
       {
         sub: account.id,
-        role: account.role,
+        role: account.roleId,
       },
       env.jwtSecret,
       { expiresIn: '1d' },

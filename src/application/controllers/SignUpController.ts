@@ -9,6 +9,7 @@ const schema = z.object({
   name: z.string().min(2),
   email: z.string().email().min(1),
   password: z.string().min(8),
+  roleId: z.string().uuid(),
 });
 
 export class SignUpController implements IController {
@@ -16,9 +17,9 @@ export class SignUpController implements IController {
 
   async handle({ body }: IRequest): Promise<IResponse> {
     try {
-      const { name, email, password } = schema.parse(body);
+      const { name, email, password, roleId } = schema.parse(body);
 
-      await this.signUpUseCase.execute({ name, email, password });
+      await this.signUpUseCase.execute({ name, email, password, roleId });
 
       return {
         statusCode: 204,
